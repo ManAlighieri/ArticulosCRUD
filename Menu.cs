@@ -8,10 +8,12 @@ namespace ArticulosCRUD
     {
         private readonly string Titulo;
         private readonly string[] Opciones;
+        private List<Producto> ListaProductos;
         public Menu(string titulo, string[] opciones)
         {
             Titulo = titulo;
             Opciones = opciones;
+            ListaProductos = new List<Producto>();
         }
 
         public void MostrarMenu()
@@ -67,13 +69,29 @@ namespace ArticulosCRUD
         public void MostrarAgregar()
         {
             Console.Clear();
-            Console.WriteLine("Opcion Agregar Seleccionada");
+            Console.WriteLine("Agregar Producto");
+            Console.WriteLine("=================");
+            Console.WriteLine();
+            Console.WriteLine("Nombre: ");
+            string nombre = Console.ReadLine();
+            Console.WriteLine("Precio: ");
+            decimal precio = (decimal.TryParse(Console.ReadLine(),  out decimal valor)) ? valor : 0;
+            Console.WriteLine("Cantidad: ");
+            int cantidad = (int.TryParse(Console.ReadLine(), out int valor2)) ? valor2 : 0;
+            Producto producto = new Producto(ListaProductos.Count() + 1, nombre, cantidad, precio);
+            ListaProductos.Add(producto);
+            Console.WriteLine("Producto creado correctamente");
             Console.ReadLine();
         }
         public void MostrarListar()
         {
             Console.Clear();
-            Console.WriteLine("Opcion Listar Seleccionada");
+            Console.WriteLine("Listar Productos");
+            Console.WriteLine("=================");
+            foreach (Producto item in ListaProductos) 
+            { 
+                Console.WriteLine(item.Nombre); 
+            }
             Console.ReadLine();
         }
         public void MostrarBuscar()
