@@ -4,7 +4,9 @@
     {
         static void Main(string[] args)
         {
-            Menu menu = new Menu();
+            string titulo = "Gestor de Articulos";
+            string[] opciones = ["Agregar", "Listar", "Buscar", "Modificar", "Eliminar"];
+            Menu menu = new Menu(titulo, opciones);
             menu.MostrarMenu();
         }
     }
