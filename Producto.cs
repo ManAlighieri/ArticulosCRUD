@@ -18,5 +18,9 @@ namespace ArticulosCRUD
             Cantidad = cantidad;
             Precio = precio;
         }
+        public override string ToString()
+        {
+            return $"ID: {Id}, Nombre: {Nombre}, Preci: {Precio}, Cantidad: {Cantidad}";
+        }
     }
 }

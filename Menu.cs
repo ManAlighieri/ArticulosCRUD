@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace ArticulosCRUD
@@ -8,6 +9,7 @@ namespace ArticulosCRUD
     {
         private readonly string Titulo;
         private readonly string[] Opciones;
+        private ManejadorArticulos Manejador { get; set; }
         private List<Producto> ListaProductos;
         public Menu(string titulo, string[] opciones)
         {
@@ -53,9 +55,12 @@ namespace ArticulosCRUD
                         MostrarBuscar(); 
                         break;
                     case "4":
-                        MostrarModificar();
+                        MostrarBuscarNombre(); 
                         break;
                     case "5":
+                        MostrarModificar();
+                        break;
+                    case "6":
                         MostrarEliminar(); 
                         break;
                     default:
@@ -66,6 +71,21 @@ namespace ArticulosCRUD
             }
             
         }
+
+        private void MostrarBuscarNombre()
+        {
+            Console.Clear();
+            Console.WriteLine("Buscar por Nombre");
+            Console.WriteLine("=================");
+            Console.WriteLine();
+            Console.WriteLine("Nombre: ");
+            string nombre = Console.ReadLine();
+            foreach (Producto item in Manejador.BuscarProductosPorNombre(nombre)) 
+            {
+                Console.WriteLine(item.ToString());
+            }
+        }
+
         public void MostrarAgregar()
         {
             Console.Clear();
@@ -78,8 +98,7 @@ namespace ArticulosCRUD
             decimal precio = (decimal.TryParse(Console.ReadLine(),  out decimal valor)) ? valor : 0;
             Console.WriteLine("Cantidad: ");
             int cantidad = (int.TryParse(Console.ReadLine(), out int valor2)) ? valor2 : 0;
-            Producto producto = new Producto(ListaProductos.Count() + 1, nombre, cantidad, precio);
-            ListaProductos.Add(producto);
+            Manejador.AgregarProducto(nombre, cantidad, precio);
             Console.WriteLine("Producto creado correctamente");
             Console.ReadLine();
         }
@@ -88,18 +107,45 @@ namespace ArticulosCRUD
             Console.Clear();
             Console.WriteLine("Listar Productos");
             Console.WriteLine("=================");
-            foreach (Producto item in ListaProductos) 
-            { 
-                Console.WriteLine(item.Nombre); 
-            }
+            Manejador.ListarProductos();    
             Console.ReadLine();
         }
         public void MostrarBuscar()
         {
+            int id;
             Console.Clear();
-            Console.WriteLine("Opcion Buscar Seleccionada");
+            Console.WriteLine("Buscar Producto por ID");
+            Console.WriteLine("======================");
+            id = PedirValorEntero("ID");
+            Producto resultado = Manejador.BuscarProductoporID(id);
+            if (resultado != null) 
+            {
+                Console.WriteLine(resultado.ToString());
+
+            }
+            else 
+            {
+                Console.WriteLine("Producto no encontrado.");
+            }
             Console.ReadLine();
         }
+        public int PedirValorEntero(string titulo)
+        {
+            while (true) 
+            {
+                Console.Write($"{titulo}: ");
+                if(int.TryParse(Console.ReadLine(),out int valor))
+                {
+                    return valor;
+                }
+                else
+                {
+                    Console.WriteLine("Valor no valido. Ingresa nuevamente");
+                    Console.ReadLine();
+                    Console.Clear();
+                }
+            }  
+         }
         public void MostrarModificar()
         {
             Console.Clear();
