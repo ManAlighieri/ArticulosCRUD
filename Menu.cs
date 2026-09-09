@@ -233,7 +233,7 @@ namespace ArticulosCRUD
                 return;
             }
             Manejador.EliminarProducto(id);
-            Console.WriteLine("Producto eliinador correctamente");
+            Console.WriteLine("Producto eliminado correctamente");
             Console.ReadLine();
         }
     }
